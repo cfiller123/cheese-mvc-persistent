@@ -10,6 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -51,6 +52,23 @@ public class MenuController {
 
         menuDao.save(menu);
         return "redirect:/view/" + menu.getId();
+    }
+
+    @RequestMapping(value = "view/", method = RequestMethod.GET)
+    public String viewMenu(@RequestParam int id, Model model) {
+
+        Menu menu = menuDao.findOne(id);
+        model.addAttribute(menu);
+
+        return "menu/view";
+    }
+
+    @RequestMapping(value = "add-item/", method = RequestMethod.GET)
+    public String addItem(Model model, @RequestParam int id) {
+
+        Menu menu = menuDao.findOne(id);
+
+        return "redirect"; //fix this
     }
 
 }
