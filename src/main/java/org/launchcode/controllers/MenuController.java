@@ -3,6 +3,7 @@ package org.launchcode.controllers;
 import org.launchcode.models.Menu;
 import org.launchcode.models.data.CheeseDao;
 import org.launchcode.models.data.MenuDao;
+import org.launchcode.models.forms.AddMenuItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,8 +68,11 @@ public class MenuController {
     public String addItem(Model model, @RequestParam int id) {
 
         Menu menu = menuDao.findOne(id);
+        AddMenuItemForm addMenuItemForm = new AddMenuItemForm(menu, cheeseDao.findAll());
+        model.addAttribute("form", addMenuItemForm);
+        model.addAttribute("title", "Add to menu: " + menu.getName());
 
-        return "redirect"; //fix this
+        return "menu/add-item";
     }
 
 }
