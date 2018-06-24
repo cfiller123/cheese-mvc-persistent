@@ -50,6 +50,7 @@ public class MenuController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Menu");
+            return "menu/add";
         }
 
         menuDao.save(menu);
