@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -57,19 +54,22 @@ public class MenuController {
         return "redirect:view/" + menu.getId();
     }
 
-    @RequestMapping(value = "view/{menuId}", method = RequestMethod.GET)
-    public String viewMenu(Model model, @RequestParam int menuId) {
+    @RequestMapping(value = "view/{id}", method = RequestMethod.GET)
+    public String viewMenu(Model model, @PathVariable int id) {
 
-        Menu menu = menuDao.findOne(menuId);
-        model.addAttribute(menu);
+        Menu menu = menuDao.findOne(id);
+        model.addAttribute("title", menu.getName());
+//        model.addAttribute("cheeses", menu.getCheeses());
+        model.addAttribute("menu", menu);
+//        model.addAttribute("menuId",menu.getId());
 
         return "menu/view";
     }
 
-    @RequestMapping(value = "add-item/{menuId}", method = RequestMethod.GET)
-    public String addItem(Model model, @RequestParam int menuId) {
+    @RequestMapping(value = "add-item/{id}", method = RequestMethod.GET)
+    public String addItem(Model model, @PathVariable int id) {
 
-        Menu menu = menuDao.findOne(menuId);
+        Menu menu = menuDao.findOne(id);
         AddMenuItemForm addMenuItemForm = new AddMenuItemForm(menu, cheeseDao.findAll());
         model.addAttribute("form", addMenuItemForm);
         model.addAttribute("title", "Add to menu: " + menu.getName());
